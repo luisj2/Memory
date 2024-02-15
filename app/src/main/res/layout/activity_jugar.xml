@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ActivityJugar">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:background="@drawable/pokeballcronometro">
+
+        <TextView
+            android:id="@+id/textViewCronometro"
+            android:layout_width="65dp"
+            android:layout_height="45dp"
+            android:layout_marginStart="206dp"
+            android:layout_marginTop="80dp"
+            android:textAlignment="center"
+            android:textSize="24sp" />
+
+    </LinearLayout>
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2">
+
+        <!--Fila1-->
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="282dp"
+            android:gravity="center">
+
+            <ImageButton
+                android:id="@+id/carta00"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                app:srcCompat="@drawable/cartapredeterminada" />
+            <ImageButton
+                android:id="@+id/carta01"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                app:srcCompat="@drawable/cartapredeterminada" />
+            <ImageButton
+                android:id="@+id/carta02"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                app:srcCompat="@drawable/cartapredeterminada" />
+            <ImageButton
+                android:id="@+id/carta03"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                app:srcCompat="@drawable/cartapredeterminada" />
+        </TableRow>
+
+        <!--Fila2-->
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="282dp"
+            android:gravity="center">
+
+            <ImageButton
+                android:id="@+id/carta10"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                app:srcCompat="@drawable/cartapredeterminada" />
+            <ImageButton
+                android:id="@+id/carta11"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                app:srcCompat="@drawable/cartapredeterminada" />
+            <ImageButton
+                android:id="@+id/carta12"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                app:srcCompat="@drawable/cartapredeterminada" />
+            <ImageButton
+                android:id="@+id/carta13"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                app:srcCompat="@drawable/cartapredeterminada" />
+        </TableRow>
+
+        <!--Fila3-->
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="282dp"
+            android:gravity="center">
+
+            <ImageButton
+                android:id="@+id/carta20"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                app:srcCompat="@drawable/cartapredeterminada" />
+            <ImageButton
+                android:id="@+id/carta21"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                app:srcCompat="@drawable/cartapredeterminada" />
+            <ImageButton
+                android:id="@+id/carta22"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                app:srcCompat="@drawable/cartapredeterminada" />
+            <ImageButton
+                android:id="@+id/carta23"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                app:srcCompat="@drawable/cartapredeterminada" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </TableLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center" />
+    </LinearLayout>
+
+</LinearLayout>
