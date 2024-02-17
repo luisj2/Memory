@@ -3,22 +3,35 @@ package com.example.memory;
 import static java.lang.Thread.sleep;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class ActivityJugar extends AppCompatActivity {
+public class MainActivityJugar extends AppCompatActivity {
 
+    ImageView viewFoto;
+    int intentos = 20;
+    TextView textViewIntentos;
+    TextView textViewFallos;
+    TextView textViewPuntos;
+    Button btnMusica;
+    Musica sonidoAcierto;
+    Musica sonidoFallo;
+    Musica sonidoLevantarCarta;
+    Musica partidaTerminada;
+    Musica musica;
     Cronometro cronometro;
-    int segundos = 60;
     TextView txtCronometro;
     ImageButton carta00,carta01,carta02,carta03,carta10,carta11,carta12,carta13,carta20,carta21,carta22,carta23;
 
@@ -26,42 +39,72 @@ public class ActivityJugar extends AppCompatActivity {
     ImageButton [][] totalCartas = new ImageButton[3][4];
     int [] imagenes = new int[6];
     Handler handler = new Handler();
-
     boolean bloquearCartas = false;
 
     int imagenPrimeraCarta,imagenSegunda;
 
     int correctos = 0;
+    int fallos = 0;
 
     int cartaPredeterminada = R.drawable.cartapredeterminada;
 
 
     ArrayList <Integer> cartasBarajadas = new ArrayList<>();
-    @SuppressLint("WrongViewCast")
+    @SuppressLint({"WrongViewCast", "MissingInflatedId", "ResourceType"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_jugar);
 
+        byte[] byteArray = getIntent().getByteArrayExtra("imagen");
+        if (byteArray != null) {
+            // Convertir el array de bytes de nuevo a un Bitmap
+            Bitmap imgBitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
+
+            // Mostrar la imagen en un ImageView en la nueva actividad
+            viewFoto = findViewById(R.id.imageViewFotoJuego);
+            if (viewFoto != null) {
+                viewFoto.setImageBitmap(imgBitmap);
+            }
+        }
 
 
+        //INICIO DE LOS OBJETOS MUSICA
+        partidaTerminada = new Musica(this,R.raw.partida_terminada);
+        musica = new Musica(this,R.raw.musica_partida);
+        sonidoLevantarCarta = new Musica(this, R.raw.levantar_carta);
+        sonidoAcierto = new Musica(this,R.raw.sonido_acierto);
+        sonidoFallo = new Musica(this,R.raw.sonido_fallo);
+        btnMusica = findViewById(R.id.detenerMusicaPartida);
+
+
+        viewFoto = findViewById(R.id.imageViewFotoJuego);
+        textViewIntentos = findViewById(R.id.textViewIntentos);
+        textViewFallos = findViewById(R.id.textViewFallos);
+        textViewPuntos = findViewById(R.id.textViewAciertos);
         txtCronometro = findViewById(R.id.textViewCronometro);
         cronometro = new Cronometro(txtCronometro);
         cartasBarajadas = barajarCartas(imagenes.length);
+
 
         cronometro.iniciarCronometro();
         inicializarCartas();
         rellenarImagenes();
         cargarImagenes();
-
+        musica.play();
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
+
                 cargarCartaDefecto();
             }
         },1200);
 
-        darFuncionalidadCartas();
+        try {
+            darFuncionalidadCartas();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
 
     }
 
@@ -103,7 +146,7 @@ public class ActivityJugar extends AppCompatActivity {
 
 
 
-    private void darFuncionalidadCartas() {
+    private void darFuncionalidadCartas() throws InterruptedException {
 
         for (int i = 0; i < totalCartas.length; i++) {
             for (int j = 0; j < totalCartas[i].length; j++) {
@@ -114,15 +157,28 @@ public class ActivityJugar extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
 
-                        if(!bloquearCartas){
-                            comprobarCarta(finalI,finalJ,totalCartas[finalI][finalJ]);
+                        actualizarViewPntsSonidoCarta();
+                        if(intentos > 0 && !cronometro.isTiempoTerminado()) {
+                            if (!bloquearCartas) {
+                                comprobarCarta(finalI, finalJ, totalCartas[finalI][finalJ]);
+                            }
+                        } else {
+                                try {
+                                    finalizarPartida(null);
+                                } catch (InterruptedException e) {
+                                    throw new RuntimeException(e);
+                                }
                         }
+
                     }
                 });
             }
         }
     }
 
+    public void actualizarViewPntsSonidoCarta(){
+        sonidoLevantarCarta.play();//LEVANTAR CARTA SONIDO
+    }
 
     public ArrayList<Integer> barajarCartas (int tamanio){
 
@@ -182,7 +238,8 @@ public class ActivityJugar extends AppCompatActivity {
         cartaSeleccionada = boton;
            
         }else{
-            
+
+
         bloquearCartas = true;
         boton.setImageResource(imagenes[cartasBarajadas.get(posicion)]);
         boton.setTag(imagenes[cartasBarajadas.get(posicion)]);
@@ -193,8 +250,12 @@ public class ActivityJugar extends AppCompatActivity {
             if (boton.getTag() != null && cartaSeleccionada.getTag() != null //Las cartas son iguales
                     && boton.getTag().equals(cartaSeleccionada.getTag())) {
                 //Toast.makeText(this, "Son iguales", Toast.LENGTH_SHORT).show();
+                sonidoAcierto.play();//SONIDO ACIERTO
                 cartaSeleccionada = null;
                 correctos++;
+                textViewPuntos.setText("Aciertos: "+correctos);
+                intentos--;
+                textViewIntentos.setText("Intentos: "+intentos);
                 if(correctos == imagenes.length){
                     Toast.makeText(this, "Has ganado!", Toast.LENGTH_SHORT).show();
                 }else{
@@ -211,7 +272,11 @@ public class ActivityJugar extends AppCompatActivity {
             } else { //Las cartas no son iguales
 
                 //Toast.makeText(this, "No son iguales", Toast.LENGTH_SHORT).show();
-
+                sonidoFallo.play();
+                fallos++;
+                intentos--;
+                textViewIntentos.setText("Intentos: "+intentos);
+                textViewFallos.setText("Fallos: "+fallos);
                 tiempoVuelta.postDelayed(new Runnable() {
                     @Override
                     public void run() {
@@ -226,5 +291,30 @@ public class ActivityJugar extends AppCompatActivity {
                 },1000);
             }
         }
+    }
+
+    public void detenrMusica(View view) {
+        if(musica.isActivada()){
+            musica.stop();
+            btnMusica.setText("Musica off");
+        } else {
+            musica.play();
+            btnMusica.setText("Musica on");
+        }
+    }
+
+
+    public void finalizarPartida(View view) throws InterruptedException {
+        musica.liberarRecursos();
+
+        //PARAR CRONOMETRO
+        cronometro.setTiempoTerminado(true);
+        //SONIDO PARTIDA TERMINADA
+        partidaTerminada.play();
+        Thread.sleep(3000);
+        partidaTerminada.liberarRecursos();
+
+        Intent i = new Intent(this, MainActivityResumenPartida.class);
+        startActivity(i);
     }
 }

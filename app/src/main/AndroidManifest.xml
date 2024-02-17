@@ -7,6 +7,8 @@
         android:required="false" />
 
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -19,12 +21,20 @@
         android:theme="@style/Theme.Memory"
         tools:targetApi="31">
         <activity
+            android:name=".MainActivityTomarFoto"
+            android:exported="false" />
+        <activity
+            android:name=".MainActivityResumenPartida"
+            android:exported="false"
+            android:label="@string/title_activity_main_resumen_partida"
+            android:theme="@style/Theme.Memory" />
+        <activity
             android:name=".MainActivityResumenJuego"
             android:exported="false"
             android:label="@string/title_activity_main_resumen_juego"
             android:theme="@style/Theme.Memory" />
         <activity
-            android:name=".ActivityJugar"
+            android:name=".MainActivityJugar"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

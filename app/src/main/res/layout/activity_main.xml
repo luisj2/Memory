@@ -15,8 +15,10 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|center"
         android:layout_marginBottom="90dp"
+        android:backgroundTint="#AD0D3ED3"
         android:onClick="redireccionarAlJuego"
-        android:text="Jugar" />
+        android:text="Jugar"
+        android:textColor="#F3E6E6" />
 
     <ImageView
         android:id="@+id/imageView2"
@@ -30,7 +32,9 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="10dp"
+        android:backgroundTint="#6B311B92"
         android:onClick="paraMusica"
-        android:text="Button" />
+        android:text="Musica on"
+        android:textColor="#FAF6F6" />
 </FrameLayout>
 

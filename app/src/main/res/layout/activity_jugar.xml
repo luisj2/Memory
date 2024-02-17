@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ActivityJugar">
+    android:scrollbarStyle="insideInset"
+    tools:context=".MainActivityJugar">
 
 
     <FrameLayout
@@ -23,6 +24,17 @@
             android:gravity="center"
             android:textSize="24sp"
             android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/detenerMusicaPartida"
+            style="@style/Widget.Material3.Button.Icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:backgroundTint="#43311B92"
+            android:onClick="detenrMusica"
+            android:text="Musica on" />
     </FrameLayout>
 
     <LinearLayout
@@ -138,6 +150,55 @@
                 android:layout_marginRight="10dp"
                 app:srcCompat="@drawable/cartapredeterminada" />
         </TableRow>
+
+        <ImageView
+            android:id="@+id/imageViewFotoJuego"
+            android:layout_width="165dp"
+            android:layout_height="55dp"
+            tools:srcCompat="@tools:sample/avatars" />
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/fragmentContainerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/textViewIntentos"
+            android:layout_width="157dp"
+            android:layout_height="31dp"
+            android:layout_marginLeft="10dp"
+            android:gravity="center|start"
+            android:text="Intentos: 20"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/textViewAciertos"
+            android:layout_width="159dp"
+            android:layout_height="35dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:gravity="center|start"
+            android:text="Puntos: "
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/textViewFallos"
+            android:layout_width="159dp"
+            android:layout_height="31dp"
+            android:layout_marginLeft="10dp"
+            android:gravity="center|start"
+            android:text="Fallos: "
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/btnFinalizarPartida"
+            android:layout_width="108dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|end"
+            android:backgroundTint="#771A237E"
+            android:gravity="center"
+            android:onClick="finalizarPartida"
+            android:text="Finalizar" />
 
     </LinearLayout>
 
