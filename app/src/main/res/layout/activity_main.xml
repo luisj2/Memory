@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -9,20 +9,28 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
+    <Button
+        android:id="@+id/jugar"
+        android:layout_width="130dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center"
+        android:layout_marginBottom="90dp"
+        android:onClick="redireccionarAlJuego"
+        android:text="Jugar" />
+
     <ImageView
-        android:id="@+id/imageView5"
-        android:layout_width="match_parent"
-        android:layout_height="214dp"
+        android:id="@+id/imageView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         app:srcCompat="@drawable/logo_pokemon_memory" />
 
     <Button
-        android:id="@+id/btnIniciar"
+        android:id="@+id/btnMusicaInicio"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="180dp"
-        android:layout_marginTop="330dp"
-        android:gravity="center_vertical"
-        android:onClick="redireccionarAlJuego"
-        android:text="@string/iniciar_juego" />
-</RelativeLayout>
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:onClick="paraMusica"
+        android:text="Button" />
+</FrameLayout>
 

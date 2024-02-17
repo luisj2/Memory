@@ -1,24 +1,25 @@
 package com.example.memory;
 
+import static java.lang.Thread.sleep;
+
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 
 public class ActivityJugar extends AppCompatActivity {
 
+    Cronometro cronometro;
+    int segundos = 60;
     TextView txtCronometro;
-
     ImageButton carta00,carta01,carta02,carta03,carta10,carta11,carta12,carta13,carta20,carta21,carta22,carta23;
 
     ImageButton cartaSeleccionada = null;
@@ -36,20 +37,23 @@ public class ActivityJugar extends AppCompatActivity {
 
 
     ArrayList <Integer> cartasBarajadas = new ArrayList<>();
+    @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_jugar);
 
-        inicializarCartas(); //inicializar y meter los botones en el array
+
 
         txtCronometro = findViewById(R.id.textViewCronometro);
-        Cronometro cronometro = new Cronometro(60,txtCronometro);
-        cronometro.start();
-
+        cronometro = new Cronometro(txtCronometro);
         cartasBarajadas = barajarCartas(imagenes.length);
+
+        cronometro.iniciarCronometro();
+        inicializarCartas();
         rellenarImagenes();
         cargarImagenes();
+
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -59,9 +63,7 @@ public class ActivityJugar extends AppCompatActivity {
 
         darFuncionalidadCartas();
 
-
     }
-
 
 
 
@@ -97,8 +99,6 @@ public class ActivityJugar extends AppCompatActivity {
         totalCartas[2][2] = carta22;
         totalCartas[2][3] = carta23;
 
-
-
     }
 
 
@@ -117,14 +117,9 @@ public class ActivityJugar extends AppCompatActivity {
                         if(!bloquearCartas){
                             comprobarCarta(finalI,finalJ,totalCartas[finalI][finalJ]);
                         }
-
-
-
-
                     }
                 });
             }
-
         }
     }
 
@@ -161,13 +156,11 @@ public class ActivityJugar extends AppCompatActivity {
         for (int i = 0; i < totalCartas.length; i++) {
             for (int j = 0; j < totalCartas[i].length; j++) {
                 int indiceImagen = cartasBarajadas.get(iterable);
-                    totalCartas[i][j].setImageResource(imagenes[indiceImagen]);
-                    iterable++;
+                totalCartas[i][j].setImageResource(imagenes[indiceImagen]);
+                iterable++;
 
             }
         }
-
-
     }
     public void cargarCartaDefecto(){
 
@@ -219,8 +212,6 @@ public class ActivityJugar extends AppCompatActivity {
 
                 //Toast.makeText(this, "No son iguales", Toast.LENGTH_SHORT).show();
 
-
-
                 tiempoVuelta.postDelayed(new Runnable() {
                     @Override
                     public void run() {
@@ -233,26 +224,7 @@ public class ActivityJugar extends AppCompatActivity {
 
                     }
                 },1000);
-
-
-
-
-
-
             }
-
-
-
-
-
-
-
-
-
         }
-
-
     }
-
-
 }
