@@ -46,7 +46,7 @@
         <!--Fila1-->
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="64dp"
             android:layout_marginBottom="10dp"
             android:gravity="center">
 
@@ -82,7 +82,7 @@
         <!--Fila2-->
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="64dp"
             android:layout_marginBottom="10dp"
             android:gravity="center">
 
@@ -118,7 +118,7 @@
         <!--Fila3-->
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="67dp"
             android:layout_marginBottom="10dp"
             android:gravity="center">
 
@@ -145,7 +145,7 @@
 
             <ImageButton
                 android:id="@+id/carta23"
-                android:layout_width="80dp"
+                android:layout_width="79dp"
                 android:layout_height="80dp"
                 android:layout_marginRight="10dp"
                 app:srcCompat="@drawable/cartapredeterminada" />
@@ -154,7 +154,7 @@
         <ImageView
             android:id="@+id/imageViewFotoJuego"
             android:layout_width="165dp"
-            android:layout_height="55dp"
+            android:layout_height="98dp"
             tools:srcCompat="@tools:sample/avatars" />
 
         <androidx.fragment.app.FragmentContainerView
@@ -173,7 +173,7 @@
 
         <TextView
             android:id="@+id/textViewAciertos"
-            android:layout_width="159dp"
+            android:layout_width="157dp"
             android:layout_height="35dp"
             android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
@@ -182,9 +182,9 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/textViewFallos"
-            android:layout_width="159dp"
-            android:layout_height="31dp"
+            android:id="@+id/textViewTiempo"
+            android:layout_width="157dp"
+            android:layout_height="40dp"
             android:layout_marginLeft="10dp"
             android:gravity="center|start"
             android:text="Fallos: "

@@ -29,11 +29,6 @@
             android:label="@string/title_activity_main_resumen_partida"
             android:theme="@style/Theme.Memory" />
         <activity
-            android:name=".MainActivityResumenJuego"
-            android:exported="false"
-            android:label="@string/title_activity_main_resumen_juego"
-            android:theme="@style/Theme.Memory" />
-        <activity
             android:name=".MainActivityJugar"
             android:exported="false" />
         <activity

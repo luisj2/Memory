@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#C8FFFFFF"
     android:backgroundTint="#F57F17"
     app:layout_anchorGravity="center"
     tools:context=".MainActivityResumenPartida">
@@ -39,7 +40,7 @@
 
     <TextView
         android:id="@+id/textViewPuntosTotal"
-        android:layout_width="126dp"
+        android:layout_width="175dp"
         android:layout_height="51dp"
         android:layout_gravity="center"
         android:layout_marginTop="50dp"
@@ -49,21 +50,22 @@
         android:textStyle="bold" />
 
     <TextView
-        android:id="@+id/textViewFallos"
+        android:id="@+id/textViewTiempo"
         android:layout_width="124dp"
         android:layout_height="50dp"
         android:layout_gravity="center"
         android:layout_marginBottom="50dp"
         android:gravity="center|start"
-        android:text="Fallos: "
+        android:text="Tiempo:"
         android:textSize="16sp"
         android:textStyle="bold" />
 
     <Button
-        android:id="@+id/btnMusicaResumen"
+        android:id="@+id/btnMute"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="#A3FFFFFF"
-        android:text="Musica on"
-        android:textColor="#F6F1F1" />
+        android:background="#B0FFFFFF"
+        android:onClick="silenciar"
+        android:text="Musica on" />
+
 </FrameLayout>

@@ -1,16 +1,9 @@
 package com.example.memory;
 
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -18,6 +11,7 @@ import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
     private ActivityResultLauncher<Intent> launcherVideo;
+    boolean pulsado = false;
     private final int REQUEST_PERMISSIONS = 1000; //VARIABLE PARA PERMISOS
     Musica musica;
     Musica sonido;
@@ -56,16 +50,21 @@ public class MainActivity extends AppCompatActivity {
 
     //IR AL JUEGO Y LIBERAR RECURSOS
     public void redireccionarAlJuego (View view) throws InterruptedException {
-        musica.liberarRecursos();
 
-        sonido = new Musica(this, R.raw.boton_pulsado);
-        //SONIDO PULSAR BOTON
-        sonido.play();
-        Thread.sleep(3000);
-        sonido.liberarRecursos();
+        if(!pulsado) {
+            musica.liberarRecursos();
 
-        Intent i = new Intent(this, MainActivityTomarFoto.class);
-        startActivity(i);
+            pulsado = true;
 
+            sonido = new Musica(this, R.raw.boton_pulsado_inicio);
+            //SONIDO PULSAR BOTON
+            sonido.play();
+            Thread.sleep(3000);
+            sonido.liberarRecursos();
+
+            Intent i = new Intent(this, MainActivityTomarFoto.class);
+            startActivity(i);
+
+        }
     }
 }

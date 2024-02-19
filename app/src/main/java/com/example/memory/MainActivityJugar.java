@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -19,13 +20,17 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class MainActivityJugar extends AppCompatActivity {
+    Thread hilo;
 
+    boolean pulsado = false;
+    boolean pararHilo = false;
+    boolean partidaGanadaBool = false;
     ImageView viewFoto;
-    int intentos = 20;
     TextView textViewIntentos;
     TextView textViewFallos;
     TextView textViewPuntos;
     Button btnMusica;
+    Musica sonidoMutar;
     Musica sonidoAcierto;
     Musica sonidoFallo;
     Musica sonidoLevantarCarta;
@@ -41,11 +46,10 @@ public class MainActivityJugar extends AppCompatActivity {
     Handler handler = new Handler();
     boolean bloquearCartas = false;
 
-    int imagenPrimeraCarta,imagenSegunda;
-
+    int tiempo = 0;
     int correctos = 0;
     int fallos = 0;
-
+    int intentos = 20;
     int cartaPredeterminada = R.drawable.cartapredeterminada;
 
 
@@ -56,10 +60,10 @@ public class MainActivityJugar extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_jugar);
 
-        byte[] byteArray = getIntent().getByteArrayExtra("imagen");
-        if (byteArray != null) {
+        byte[] arrayBytesFoto = getIntent().getByteArrayExtra("imagen");
+        if (arrayBytesFoto != null) {
             // Convertir el array de bytes de nuevo a un Bitmap
-            Bitmap imgBitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
+            Bitmap imgBitmap = BitmapFactory.decodeByteArray(arrayBytesFoto, 0, arrayBytesFoto.length);
 
             // Mostrar la imagen en un ImageView en la nueva actividad
             viewFoto = findViewById(R.id.imageViewFotoJuego);
@@ -72,6 +76,7 @@ public class MainActivityJugar extends AppCompatActivity {
         //INICIO DE LOS OBJETOS MUSICA
         partidaTerminada = new Musica(this,R.raw.partida_terminada);
         musica = new Musica(this,R.raw.musica_partida);
+        sonidoMutar = new Musica(this,R.raw.sonido_mute_btn);
         sonidoLevantarCarta = new Musica(this, R.raw.levantar_carta);
         sonidoAcierto = new Musica(this,R.raw.sonido_acierto);
         sonidoFallo = new Musica(this,R.raw.sonido_fallo);
@@ -80,7 +85,7 @@ public class MainActivityJugar extends AppCompatActivity {
 
         viewFoto = findViewById(R.id.imageViewFotoJuego);
         textViewIntentos = findViewById(R.id.textViewIntentos);
-        textViewFallos = findViewById(R.id.textViewFallos);
+        textViewFallos = findViewById(R.id.textViewTiempo);
         textViewPuntos = findViewById(R.id.textViewAciertos);
         txtCronometro = findViewById(R.id.textViewCronometro);
         cronometro = new Cronometro(txtCronometro);
@@ -92,10 +97,34 @@ public class MainActivityJugar extends AppCompatActivity {
         rellenarImagenes();
         cargarImagenes();
         musica.play();
+
+
+        hilo = new Thread() {
+            @Override
+            public void run() {
+                while(!pararHilo) {
+                    tiempo = cronometro.getSegundosRestantes();
+
+                    Log.i("Tiempo", "" + tiempo);
+                    if (intentos == 0 || tiempo == 0 || partidaGanadaBool) {
+                        cronometro.setTiempoTerminado(true);
+                        finalizarPartida(null);
+                        pararHilo = true;
+                    }
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
+        };
+
+        hilo.start();
+
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-
                 cargarCartaDefecto();
             }
         },1200);
@@ -156,20 +185,10 @@ public class MainActivityJugar extends AppCompatActivity {
                 totalCartas[finalI][finalJ].setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-
                         actualizarViewPntsSonidoCarta();
-                        if(intentos > 0 && !cronometro.isTiempoTerminado()) {
                             if (!bloquearCartas) {
                                 comprobarCarta(finalI, finalJ, totalCartas[finalI][finalJ]);
                             }
-                        } else {
-                                try {
-                                    finalizarPartida(null);
-                                } catch (InterruptedException e) {
-                                    throw new RuntimeException(e);
-                                }
-                        }
-
                     }
                 });
             }
@@ -258,6 +277,7 @@ public class MainActivityJugar extends AppCompatActivity {
                 textViewIntentos.setText("Intentos: "+intentos);
                 if(correctos == imagenes.length){
                     Toast.makeText(this, "Has ganado!", Toast.LENGTH_SHORT).show();
+                    partidaGanadaBool = true;
                 }else{
                     tiempoVuelta.postDelayed(new Runnable() {
                         @Override
@@ -294,6 +314,7 @@ public class MainActivityJugar extends AppCompatActivity {
     }
 
     public void detenrMusica(View view) {
+        sonidoMutar.play();
         if(musica.isActivada()){
             musica.stop();
             btnMusica.setText("Musica off");
@@ -303,18 +324,37 @@ public class MainActivityJugar extends AppCompatActivity {
         }
     }
 
+    public void finalizarPartida(View view)  {
 
-    public void finalizarPartida(View view) throws InterruptedException {
-        musica.liberarRecursos();
+       if(!pulsado) {
 
-        //PARAR CRONOMETRO
-        cronometro.setTiempoTerminado(true);
-        //SONIDO PARTIDA TERMINADA
-        partidaTerminada.play();
-        Thread.sleep(3000);
-        partidaTerminada.liberarRecursos();
 
-        Intent i = new Intent(this, MainActivityResumenPartida.class);
-        startActivity(i);
+           pulsado = true;
+
+           musica.liberarRecursos();
+
+
+           //PARAR CRONOMETRO
+           cronometro.setTiempoTerminado(true);
+           //SONIDO PARTIDA TERMINADA
+           partidaTerminada.play();
+
+
+           //PAUSA 3 SEGUNDOS
+           try {
+               Thread.sleep(3000);
+           } catch (InterruptedException e) {
+               throw new RuntimeException(e);
+           }
+           partidaTerminada.liberarRecursos();
+
+
+           //CAMBIO DE ACTIVIDAD
+           Intent i = new Intent(this, MainActivityResumenPartida.class);
+           i.putExtra("intentos", intentos);
+           i.putExtra("correctos", correctos);
+           i.putExtra("tiempo", tiempo);
+           startActivity(i);
+       }
     }
 }

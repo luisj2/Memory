@@ -69,10 +69,15 @@ public class Cronometro {
     }
 
     public boolean isTiempoTerminado() {
-        return isTiempoTerminado;
+
+            return isTiempoTerminado;
+    }
+
+    public int getSegundosRestantes() {
+        return segundosRestantes;
     }
 
     public void setTiempoTerminado(boolean tiempoTerminado) {
-        isTiempoTerminado = tiempoTerminado;
+            isTiempoTerminado = tiempoTerminado;
     }
 }
